@@ -39,6 +39,20 @@ class Database
             ->fetch(PDO::FETCH_OBJ);
     }
 
+    public function selectMany($table, $wheres = []) {
+        $query = "";
+        if(count($wheres) != 0){
+            $whereList = [];
+            foreach ($wheres as $key => $value)
+                $whereList[] = $key."=".$value;
+            $query = " WHERE ".implode(' AND ', $whereList);
+        }
+        
+        return $this->pdo
+            ->query("SELECT * FROM ".$table.$query)
+            ->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function __destruct() {
         $this->pdo = null;
     }
